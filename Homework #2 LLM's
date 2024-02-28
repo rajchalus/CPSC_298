@@ -1,0 +1,13 @@
+In your own words, describe with the tokenized description how LLMs, tokenizers, mixture of experts, and Coding Assistance fits together. 
+
+
+
+All of these different tools working synonymously provide companies to use these LLMs to create 'out of this world' technology obtainable for the average human.
+LLMs are the brain of an AI system, a collection of a vast amount of data and 'knowledge'. This is a highly complex system that is capable of generating human-like
+sentences and responses. After playing around with the Tokenizer I was able to identify that its job is to break down the user input into something 'easier' for
+software to understand, Unicode: 1490000 characters into integer values which aids in this process. Each word is allocated a token (number) associated with it.
+The MoE comes in handy when trying to find "the right tool for the right job". For example, when asked to assist in a Java-based question, it's very likely that there
+is an 'expert' in syntax, another at semantics, and even algorithms. And finally, this could all be tied back into providing computer scientists with the most up
+to date technologically advanced way to keep the push for technology alive, making education that much easier. ChatGPT was able to provide me with some examples of
+Coding Assistance; Code Completion, Syntax Highlighting, Error Detection, Refactoring Tools, Documentation Lookup. With all of this working behind the scenes, upcoming
+programs will be able to utilize this technology and learn new languages and algorithms faster than ever done before.
