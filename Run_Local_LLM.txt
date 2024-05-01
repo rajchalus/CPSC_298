@@ -1,0 +1,230 @@
+The applicaiton that I am running my model on is LmStudio. 
+
+The model that I am utilizing is:
+lmstudio-community/Meta-Llama-3-8B-Instruct-GGUF/Meta-Llama-3-8B-Instruct-Q4_K_M.gguf:2
+
+I provided Custom Instructions for this Model: "You are a Python gameDev coding assistant"
+
+
+The Input: 
+"write me a simple game of Snake in python game"
+
+
+The Output:
+
+Here's a basic implementation of the classic game Snake using Python and Pygame library:
+
+```python
+import pygame
+import sys
+import random
+
+# Initialize Pygame
+pygame.init()
+
+# Set up some constants
+WIDTH, HEIGHT = 640, 480
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+
+# Set up the display
+win = pygame.display.set_mode((WIDTH, HEIGHT))
+
+# Set up the snake and food
+snake = [(100, 50), (90, 50), (80, 50)]
+food_pos = (random.randint(0, WIDTH-10), random.randint(0, HEIGHT-10))
+direction = 'right'
+
+# Game loop
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP and direction != 'down':
+                direction = 'up'
+            elif event.key == pygame.K_DOWN and direction != 'up':
+                direction = 'down'
+            elif event.key == pygame.K_LEFT and direction != 'right':
+                direction = 'left'
+            elif event.key == pygame.K_RIGHT and direction != 'left':
+                direction = 'right'
+
+    # Move the snake
+    if direction == 'up':
+        head_pos = (snake[0][0], snake[0][1] - 10)
+    elif direction == 'down':
+        head_pos = (snake[0][0], snake[0][1] + 10)
+    elif direction == 'left':
+        head_pos = (snake[0][0] - 10, snake[0][1])
+    else:
+        head_pos = (snake[0][0] + 10, snake[0][1])
+
+    # Check if the head has eaten the food
+    if head_pos == food_pos:
+        snake.insert(0, head_pos)
+        food_pos = (random.randint(0, WIDTH-10), random.randint(0, HEIGHT-10))
+    else:
+        snake.pop()
+
+    # Add the new head position to the snake
+    snake.insert(0, head_pos)
+
+    # Draw everything
+    win.fill(BLACK)
+    for pos in snake:
+        pygame.draw.rect(win, WHITE, (pos[0], pos[1], 10, 10))
+    pygame.draw.rect(win, WHITE, (food_pos[0], food_pos[1], 10, 10))
+
+    # Check if the snake has eaten itself
+    for i in range(2, len(snake)):
+        if snake[i] == snake[i-1]:
+            print("Game Over!")
+            pygame.quit()
+            sys.exit()
+
+    # Update the display
+    pygame.display.update()
+```
+
+This code creates a window with a snake that you can control using the arrow keys. The snake will move in the direction you last pressed, and it will eat food (represented by small white squares) as it goes. If the snake eats itself, the game will end.
+
+Note: This is a very basic implementation of Snake and there's a lot more you could add to make the game more interesting (like scoring, different shapes for the snake, etc.).
+
+I hope this helps! Let me know if you have any questions or need further assistance.
+
+
+
+
+
+I also wanted to try this with Groq.com ; I was able to get 892 tolkens per second 
+
+
+The model that I am utilizing is: Llamma 3; 8B
+
+My Input: "You are a Python gameDev coding assistant, write me a simple game of Snake in python game"
+
+My Output: 
+
+import pygame
+import time
+import random
+
+pygame.init()
+
+white = (255, 255, 255)
+yellow = (255, 255, 102)
+black = (0, 0, 0)
+red = (213, 50, 80)
+green = (0, 255, 0)
+blue = (50, 153, 213)
+
+dis_width = 800
+dis_height = 600
+
+dis = pygame.display.set_mode((dis_width, dis_height))
+pygame.display.set_caption('Snake Game')
+
+clock = pygame.time.Clock()
+
+snake_block = 10
+snake_speed = 15
+
+font_style = pygame.font.SysFont("bahnschrift", 25)
+
+def Your_score(score):
+    value = font_style.render("Your Score: " + str(score), True, yellow)
+    dis.blit(value, [0, 0])
+
+def our_snake(snake_block, snake_list):
+    for x in snake_list:
+        pygame.draw.rect(dis, black, [x[0], x[1], snake_block, snake_block])
+
+def message(msg, color):
+    mesg = font_style.render(msg, True, color)
+    dis.blit(mesg, [dis_width/6, dis_height/3])
+
+def gameLoop():
+    game_over = False
+    game_close = False
+
+    x1 = dis_width/2
+    y1 = dis_height/2
+
+    x1_change = 0
+    y1_change = 0
+
+    snake_List = []
+    Length = 1
+
+    foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
+    foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
+
+    while not game_over:
+
+        while game_close == True:
+            dis.fill(blue)
+            message("You Lost! Press C-Play Again or Q-Quit", red)
+            Your_score(Length - 1)
+            pygame.display.update()
+
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_q:
+                        game_over = True
+                        game_close = False
+                    if event.key == pygame.K_c:
+                        gameLoop()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game_over = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    x1_change = -snake_block
+                    y1_change = 0
+                elif event.key == pygame.K_RIGHT:
+                    x1_change = snake_block
+                    y1_change = 0
+                elif event.key == pygame.K_UP:
+                    y1_change = -snake_block
+                    x1_change = 0
+                elif event.key == pygame.K_DOWN:
+                    y1_change = snake_block
+                    x1_change = 0
+
+        if x1 >= dis_width or x1 < 0 or y1 >= dis_height or y1 < 0:
+            game_close = True
+        x1 += x1_change
+        y1 += y1_change
+        dis.fill(blue)
+        pygame.draw.rect(dis, green, [foodx, foody, snake_block, snake_block])
+        snake_Head = []
+        snake_Head.append(x1)
+        snake_Head.append(y1)
+        snake_List.append(snake_Head)
+        if len(snake_List) > Length:
+            del snake_List[0]
+
+        for x in snake_List[:-1]:
+            if x == snake_Head:
+                game_close = True
+
+        our_snake(snake_block, snake_List)
+        Your_score(Length - 1)
+
+        pygame.display.update()
+
+        if x1 == foodx and y1 == foody:
+            foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
+            foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
+            Length += 1
+
+        clock.tick(snake_speed)
+
+    pygame.quit()
+    quit()
+
+gameLoop()
+
